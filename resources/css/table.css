@@ -1,0 +1,64 @@
+@charset "utf-8";
+/* Table */
+.table {
+  display: flex;
+  flex-direction: column;
+}
+.table .th {
+  font-weight: 900;
+  border-bottom: 3px solid var(--color-gray-300);
+}
+.table-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--color-gray-300);
+}
+.table-row form {
+  display: flex;
+  width: 100%;
+}
+.table-row:hover {
+  background: var(--color-gray-100);
+}
+.table-col {
+  flex: 1;
+  padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.table input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), .table select {
+  font-size: 1rem;
+  height: 35px;
+  vertical-align: top;
+  width: 100%;
+}
+.table-row .buttons.spaced .button {margin-bottom: 0rem;}
+.grow-1 {flex: 1;}
+.grow-2 {flex: 2;}
+.grow-3 {flex: 3;}
+.grow-4 {flex: 4;}
+
+/* tablet */
+@media screen and (max-width: 1023px), print {
+  .table-row, .table-row form {
+    flex-wrap: wrap;
+  }
+  .table-row > .table-col {
+    flex: 1 1 25%;
+  }
+  .table-row form > .table-col {
+    flex: 1 1 25%;
+  }
+}
+
+/* mobile */
+@media screen and (max-width: 768px), print {
+  .table-row, .table-row form {
+    flex-direction: column;
+  }
+  .table-row {
+    align-items: baseline;
+  }
+}

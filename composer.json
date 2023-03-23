@@ -1,0 +1,60 @@
+{
+    "name": "tobento/app-view",
+    "type": "library",
+    "description": "App view support.",
+    "keywords": [
+        "tobento",
+        "package",
+        "app",
+        "view"
+    ],
+    "homepage": "https://www.tobento.ch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Strub",
+            "email": "info@tobento.ch",
+            "homepage": "https://www.tobento.ch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.0",
+        "tobento/app": "^1.0",
+        "tobento/app-migration": "^1.0",
+        "tobento/service-view": "^1.0",
+        "tobento/service-uri": "^1.0",
+        "tobento/service-menu": "^1.0.7",
+        "tobento/service-form": "^1.0",
+        "tobento/service-table": "^1.0",
+        "tobento/css-basis": "^1.0"
+    },
+    "suggest": {
+        "tobento/app-http": "App Http for supporting forms and routing",
+        "tobento/app-i18n": "App I18n for supporting translations"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "vimeo/psalm": "^4.0",
+        "tobento/app-http": "^1.0.3",
+        "tobento/service-filesystem": "^1.0",
+        "tobento/service-language": "^1.0",
+        "tobento/service-translation": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tobento\\App\\View\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tobento\\App\\View\\Test\\": "tests",
+            "Tobento\\App\\Http\\Test\\": "vendor/tobento/app-http/tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testdox --colors=always",
+        "psalm": "vendor/bin/psalm"
+    }
+}
