@@ -268,7 +268,7 @@ Check out the [Menu Service](https://github.com/tobento-ch/service-menu) to lear
 
 Returns the message translated by the [Translator](https://github.com/tobento-ch/service-translation#translator) if available within the app.
 
-By default, the translator is not available, you might install the [App i18n](https://github.com/tobento-ch/app-i18n) bundle to do so.
+By default, the translator is not available, you might install the [App Translation](https://github.com/tobento-ch/app-translation) bundle to do so.
 
 ```php
 $translated = $view->trans(
