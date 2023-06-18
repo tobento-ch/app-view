@@ -27,7 +27,7 @@
         "tobento/service-uri": "^1.0",
         "tobento/service-menu": "^1.0.7",
         "tobento/service-form": "^1.0",
-        "tobento/service-table": "^1.0",
+        "tobento/service-table": "^1.0.2",
         "tobento/css-basis": "^1.0"
     },
     "suggest": {
