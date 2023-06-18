@@ -44,6 +44,11 @@ class Form extends Boot
     ];
     
     /**
+     * @var null|ServiceForm
+     */
+    protected null|ServiceForm $form = null;
+    
+    /**
      * Boot application services.
      *
      * @param Middleware $middleware
@@ -64,10 +69,21 @@ class Form extends Boot
         $this->app->set(FormFactoryInterface::class, ResponserFormFactory::class);
         
         $this->app->on(ViewInterface::class, function(ViewInterface $view) {
-            $app = $this->app;
-            $view->addMacro('form', function() use ($app): ServiceForm {
-                return $app->get(FormFactoryInterface::class)->createForm();
-            });
+            $view->addMacro('form', [$this, 'form']);
         });
+    }
+    
+    /**
+     * Returns the form.
+     *
+     * @return ServiceForm
+     */
+    public function form(): ServiceForm
+    {
+        if (!is_null($this->form)) {
+            return $this->form;
+        }
+        
+        return $this->form = $this->app->get(FormFactoryInterface::class)->createForm();
     }
 }
