@@ -21,7 +21,7 @@ use Tobento\Service\View\PhpRenderer;
 use Tobento\Service\View\Data;
 use Tobento\Service\View\Assets;
 use Tobento\Service\View\TagsAttributes;
-use Tobento\Service\Uri\BaseUriInterface;
+use Tobento\Service\Uri\AssetUriInterface;
 use Tobento\Service\Routing\RouterInterface;
 use Tobento\Service\Language\LanguagesInterface;
 use Tobento\Service\Translation\TranslatorInterface;
@@ -47,10 +47,10 @@ class View extends Boot
      * Boot application services.
      *
      * @param Migration $migration
-     * @param null|BaseUriInterface $baseUri
+     * @param null|AssetUriInterface $assetUri
      * @return void
      */
-    public function boot(Migration $migration, null|BaseUriInterface $baseUri = null): void
+    public function boot(Migration $migration, null|AssetUriInterface $assetUri = null): void
     {
         // Add view dir if not exists:
         if (! $this->app->dirs()->has('views')) {
@@ -65,15 +65,12 @@ class View extends Boot
         // Install migrations:
         $migration->install(\Tobento\App\View\Migration\View::class);
         
-        $this->app->set(ViewInterface::class, function() use ($baseUri) {
-            
-            $assetUri = '';
-            
-            if ($baseUri) {
-                $assetUri = (string)$baseUri;
-                $assetUri = ltrim($assetUri, '/').'/';
+        $this->app->set(ViewInterface::class, function() use ($assetUri) {
+
+            if ($assetUri) {
+                $assetUri = ltrim((string)$assetUri, '/').'/';
             }
-            
+
             $view = new DefaultView(
                 new PhpRenderer(
                     $this->app->dirs()->sort()->group('views')
@@ -81,7 +78,7 @@ class View extends Boot
                 new Data(),
                 new Assets(
                     assetDir: $this->app->dirs()->get('public'),
-                    assetUri: $assetUri
+                    assetUri: (string)$assetUri
                 )
             );
             
