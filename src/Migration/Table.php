@@ -63,7 +63,11 @@ class Table implements MigrationInterface
     public function install(): ActionsInterface
     {
         return new Actions(
-            new FilesCopy($this->files),
+            new FilesCopy(
+                files: $this->files,
+                type: 'assets',
+                description: 'Table asset file.',
+            ),
         );
     }
 
@@ -75,7 +79,11 @@ class Table implements MigrationInterface
     public function uninstall(): ActionsInterface
     {
         return new Actions(
-            new FilesDelete($this->files),
+            new FilesDelete(
+                files: $this->files,
+                type: 'assets',
+                description: 'Table asset file.',
+            ),
         );
     }
 }

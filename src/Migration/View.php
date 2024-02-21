@@ -26,9 +26,14 @@ use Tobento\Service\Dir\DirsInterface;
 class View implements MigrationInterface
 {
     /**
-     * @var array The files.
+     * @var array The view files.
      */
-    protected array $files;
+    protected array $viewFiles;
+    
+    /**
+     * @var array The asset files.
+     */
+    protected array $assetFiles;
     
     /**
      * Create a new View.
@@ -40,7 +45,7 @@ class View implements MigrationInterface
     ) {
         $viewsDir = realpath(__DIR__.'/../../').'/resources/views/';
         
-        $this->files = [
+        $this->viewFiles = [
             $this->dirs->get('views').'exception/' => [
                 $viewsDir.'exception/error.php',
                 $viewsDir.'exception/error.xml.php',
@@ -53,6 +58,9 @@ class View implements MigrationInterface
                 $viewsDir.'inc/messages.php',
                 $viewsDir.'inc/nav.php',
             ],
+        ];
+        
+        $this->assetFiles = [
             $this->dirs->get('public').'css/' => [
                 realpath(__DIR__.'/../../').'/resources/css/app.css',
                 $this->dirs->get('vendor').'/tobento/css-basis/src/basis.css',
@@ -78,7 +86,16 @@ class View implements MigrationInterface
     public function install(): ActionsInterface
     {
         return new Actions(
-            new FilesCopy($this->files),
+            new FilesCopy(
+                files: $this->viewFiles,
+                type: 'views',
+                description: 'View files.',
+            ),
+            new FilesCopy(
+                files: $this->assetFiles,
+                type: 'assets',
+                description: 'Asset files.',
+            ),
         );
     }
 
@@ -90,7 +107,16 @@ class View implements MigrationInterface
     public function uninstall(): ActionsInterface
     {
         return new Actions(
-            new FilesDelete($this->files),
+            new FilesDelete(
+                files: $this->viewFiles,
+                type: 'views',
+                description: 'View files.',
+            ),
+            new FilesDelete(
+                files: $this->assetFiles,
+                type: 'assets',
+                description: 'Asset files.',
+            ),
         );
     }
 }
