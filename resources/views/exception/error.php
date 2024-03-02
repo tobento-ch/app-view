@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex">
         
-        <title><?= $view->etrans($message) ?></title>
+        <title><?= $view->esc($message) ?></title>
         
         <?= $view->render('inc/head') ?>
         <?= $view->assets()->render() ?>
@@ -23,7 +23,7 @@
             <?= $view->render('inc.messages') ?>
 
             <h1 class="text-xl">
-                <?= $view->etrans($message) ?>
+                <?= $view->esc($message) ?>
             </h1>
 
         </main>

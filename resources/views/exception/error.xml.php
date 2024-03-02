@@ -1,4 +1,4 @@
 <error>
     <code><?= $view->esc($code) ?></code>
-    <message><?= $view->etrans($message) ?></message>
+    <message><?= $view->esc($message) ?></message>
 </error>
