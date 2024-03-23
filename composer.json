@@ -30,6 +30,7 @@
         "tobento/service-table": "^1.0.2",
         "tobento/service-language": "^1.0",
         "tobento/service-translation": "^1.0",
+        "tobento/service-dater": "^1.0.2",
         "tobento/css-basis": "^1.0"
     },
     "suggest": {
