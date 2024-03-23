@@ -25,7 +25,7 @@
         "tobento/app-migration": "^1.0",
         "tobento/service-view": "^1.0",
         "tobento/service-uri": "^1.0",
-        "tobento/service-menu": "^1.0.7",
+        "tobento/service-menu": "^1.1.0",
         "tobento/service-form": "^1.0",
         "tobento/service-table": "^1.0.2",
         "tobento/service-language": "^1.0",
