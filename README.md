@@ -14,6 +14,7 @@ The app view includes support for creating menus, forms and more for creating an
         - [Available View Macros](#available-view-macros)
     - [Menus Boot](#menus-boot)
     - [Form Boot](#form-boot)
+        - [CSRF Protection](#csrf-protection)
         - [Form Messages](#form-messages)
     - [Messages Boot](#messages-boot)
     - [Breadcrumb Boot](#breadcrumb-boot)
@@ -251,6 +252,15 @@ var_dump($view->app() instanceof AppInterface);
 // bool(true)
 ```
 
+**assetPath**
+
+The ```assetPath``` function returns the fully qualified path to your application's asset directory.
+
+```php
+var_dump($view->assetPath('editor/script.js'));
+// string(26) "/basepath/editor/script.js"
+```
+
 **menu**
 
 Returns the menu for the specified name.
@@ -315,6 +325,41 @@ var_dump($view->tagAttributes('body') instanceof AttributesInterface);
 ```
 
 Check out the [Tag Service - Attributes Interface](https://github.com/tobento-ch/service-tag#attributes-interface) to learn more about it in general.
+
+**date / dateTime / formatDate**
+
+You may use ```date```, ```dateTime``` and ```formatDate``` methods to format and display any dates using the [Date Formatter](https://github.com/tobento-ch/service-dater#date-formatter).
+
+```php
+// date:
+var_dump($view->date('2024-02-15 10:15'));
+// string(27) "Thursday, 15. February 2024"
+
+var_dump($view->date(
+    value: 'now',
+    format: 'EE, dd. MMMM yyyy',
+    locale: 'de_DE',
+));
+// string(19) "Sa., 23. März 2024"
+
+// dateTime:
+var_dump($view->dateTime('now'));
+// string(31) "Saturday, 23. March 2024, 07:36"
+
+var_dump($view->dateTime(
+    value: 'now',
+    format: 'EE, dd. MMMM yyyy, HH:mm',
+    locale: 'de_DE',
+));
+// string(26) "Sa., 23. März 2024, 07:45"
+
+// formatDate:
+var_dump($view->formatDate(
+    value: '2024-02-15 10:15',
+    format: 'd.m.Y H:i',
+));
+// string(16) "15.02.2024 10:15"
+```
 
 ## Menus Boot
 
@@ -459,6 +504,40 @@ $app->run();
 Check out the [Form Service](https://github.com/tobento-ch/service-form) to learn more about it in general.
 
 You might boot the [App Http - Error Handler Boot](https://github.com/tobento-ch/app-http#error-handler-boot) which already handles exceptions caused by the form.
+
+### CSRF Protection
+
+[CSRF protection](https://github.com/tobento-ch/service-form#csrf-protection) is implemented and csrf token will be verified by the registered [VerifyCsrfToken Middleware](https://github.com/tobento-ch/service-form#tokenizer-psr-15-middleware).
+
+**CSRF Token**
+
+The form boot adds the CSRF Token to the global view data accessible in your view files:
+
+```php
+$token = $view->data()->get('csrfToken');
+```
+
+**X-CSRF-TOKEN**
+
+In addition to checking for the CSRF token as a POST parameter, the [VerifyCsrfToken Middleware](https://github.com/tobento-ch/service-form#tokenizer-psr-15-middleware) will also check for the ```X-CSRF-TOKEN``` request header.
+
+When using the [Default Layout](#default-layout), in the view file ```inc/head```, the token will be stored in a HTML meta tag named ```csrf-token```:
+
+```html
+<meta name="csrf-token" content="token-string">
+```
+
+You may use this meta tag to get the token while setting the ```X-CSRF-TOKEN``` header:
+
+```js
+fetch("https://example.com", {
+    method: "POST",
+    headers: {
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify(data)
+});
+```
 
 ### Form Messages
 
