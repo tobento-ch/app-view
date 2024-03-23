@@ -322,4 +322,27 @@ class ViewTest extends TestCase
             $app->get(ViewInterface::class)->tagAttributes('body')
         );
     }
+    
+    public function testDateMacrosAreAvailable()
+    {
+        $app = $this->createApp();
+        $app->boot(View::class);
+        $app->booting();
+        $view = $app->get(ViewInterface::class);
+        
+        $this->assertSame('Thursday, 15. February 2024', $view->date('2024-02-15 10:15'));
+        $this->assertSame('Thursday, 15. February 2024, 10:15', $view->dateTime('2024-02-15 10:15'));
+        $this->assertSame('15.02.2024 10:15', $view->formatDate('2024-02-15 10:15', 'd.m.Y H:i'));
+    }
+    
+    public function testAssetPathMacroIsAvailable()
+    {
+        $app = $this->createApp();
+        $app->boot(View::class);
+        $app->booting();
+        $view = $app->get(ViewInterface::class);
+        
+        $this->assertSame('/js/app.js', $view->assetPath('js/app.js'));
+        $this->assertSame('/js/app.js', $view->assetPath('/js/app.js'));
+    }
 }

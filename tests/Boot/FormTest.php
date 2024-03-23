@@ -88,4 +88,16 @@ class FormTest extends TestCase
             $view->form()
         );
     }
+    
+    public function testViewCsrfTokenIsAvailable()
+    {
+        $app = $this->createApp();
+        $app->boot(View::class);
+        $app->boot(Form::class);
+        $app->booting();
+        
+        $view = $app->get(ViewInterface::class);
+        
+        $this->assertSame(32, strlen($view->data()->get('csrfToken')));
+    }
 }
