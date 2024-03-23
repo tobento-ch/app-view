@@ -25,6 +25,7 @@ use Tobento\Service\Uri\AssetUriInterface;
 use Tobento\Service\Routing\RouterInterface;
 use Tobento\Service\Language\LanguagesInterface;
 use Tobento\Service\Translation\TranslatorInterface;
+use Tobento\Service\Dater\DateFormatter;
 
 /**
  * View boot.
@@ -66,11 +67,18 @@ class View extends Boot
         $migration->install(\Tobento\App\View\Migration\View::class);
         
         $this->app->set(ViewInterface::class, function() use ($assetUri) {
-
+            
+            $assetPath = '/';
+            
             if ($assetUri) {
+                $assetPath = '/'.trim($assetUri->getPath(), '/');
+                if (!str_ends_with($assetPath, '/')) {
+                    $assetPath = $assetPath.'/';
+                }
+                
                 $assetUri = ltrim((string)$assetUri, '/').'/';
             }
-
+            
             $view = new DefaultView(
                 new PhpRenderer(
                     $this->app->dirs()->sort()->group('views')
@@ -86,6 +94,16 @@ class View extends Boot
             $view->with('htmlLang', 'en');
             $view->with('locale', 'en');
             $view->with('routeName', '');
+            
+            $view->addMacro('assetPath', function(string $asset) use ($assetPath) {
+                return $assetPath.ltrim($asset, '/');
+            });
+            
+            // date formatter
+            $df = $this->app->get(DateFormatter::class);
+            $view->addMacro('date', [$df, 'date']);
+            $view->addMacro('dateTime', [$df, 'dateTime']);
+            $view->addMacro('formatDate', [$df, 'format']);
             
             $tags = new TagsAttributes();
             $view->addMacro('tagAttributes', [$tags, 'get']);
