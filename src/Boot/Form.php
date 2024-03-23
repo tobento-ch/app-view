@@ -57,7 +57,7 @@ class Form extends Boot
     public function boot(Middleware $middleware): void
     {
         $middleware->add(VerifyCsrfToken::class, priority: 5050);
-        
+
         $this->app->set(TokenizerInterface::class, function() {
             return new SessionTokenizer(
                 session: $this->app->get(SessionInterface::class),
@@ -68,9 +68,13 @@ class Form extends Boot
         
         $this->app->set(FormFactoryInterface::class, ResponserFormFactory::class);
         
-        $this->app->on(ViewInterface::class, function(ViewInterface $view) {
-            $view->addMacro('form', [$this, 'form']);
-        });
+        $this->app->on(
+            ViewInterface::class,
+            function(ViewInterface $view, TokenizerInterface $tokenizer) {
+                $view->with('csrfToken', $tokenizer->generate($tokenizer->getTokenName()));
+                $view->addMacro('form', [$this, 'form']);
+            }
+        );
     }
     
     /**
