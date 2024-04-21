@@ -24,7 +24,7 @@ The app view includes support for creating menus, forms and more for creating an
         - [Exception Views](#exception-views)
     - [Themes](#themes)
         - [Theme Views](#theme-views)
-        - [Theme Assets](#theme-asstes)
+        - [Theme Assets](#theme-assets)
 - [Credits](#credits)
 ___
 
@@ -257,8 +257,8 @@ var_dump($view->app() instanceof AppInterface);
 The ```assetPath``` function returns the fully qualified path to your application's asset directory.
 
 ```php
-var_dump($view->assetPath('editor/script.js'));
-// string(26) "/basepath/editor/script.js"
+var_dump($view->assetPath('assets/editor/script.js'));
+// string(33) "/basepath/assets/editor/script.js"
 ```
 
 **menu**
@@ -682,7 +682,7 @@ In your view files, render the breadcrumb view:
 
 The table boot does the following:
 
-* Adds table.css to your specified public css directory ```public/css/table.css```
+* Adds table.css to your specified public css directory ```public/assets/css/table.css```
 * Adds table view macro
 
 ```php
@@ -718,7 +718,7 @@ $table->row([
         
         <?php
         // add table.css
-        $view->asset('css/table.css');
+        $view->asset('assets/css/table.css');
         ?>
     </head>
     <body>
@@ -733,7 +733,7 @@ Check out the [Table Service](https://github.com/tobento-ch/service-table) to le
 
 ### Views
 
-The default layout uses the ```public/css/app.css``` and the [Basis Css](https://github.com/tobento-ch/css-basis) ```public/css/basis.css``` to style the view files.
+The default layout uses the ```public/assets/css/app.css``` and the [Basis Css](https://github.com/tobento-ch/css-basis) ```public/assets/css/basis.css``` to style the view files.
 
 A view file using the view boots may look like: 
 
@@ -844,7 +844,7 @@ You can handle your custom assets in the following ways:
 In your customized views you may just replace the assets by your custom assets:
 
 ```php
-$view->asset('css/my-app.css');
+$view->asset('assets/css/my-app.css');
 ```
 
 **Using an asset handler**
