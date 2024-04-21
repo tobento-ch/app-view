@@ -17,6 +17,7 @@ use Tobento\App\Boot;
 use Tobento\App\Migration\Boot\Migration;
 use Tobento\Service\View\ViewInterface;
 use Tobento\Service\View\View as DefaultView;
+use Tobento\Service\View\RendererInterface;
 use Tobento\Service\View\PhpRenderer;
 use Tobento\Service\View\Data;
 use Tobento\Service\View\Assets;
@@ -66,6 +67,13 @@ class View extends Boot
         // Install migrations:
         $migration->install(\Tobento\App\View\Migration\View::class);
         
+        // Interfaces:
+        $this->app->set(RendererInterface::class, function() {
+            return new PhpRenderer(
+                $this->app->dirs()->sort()->group('views')
+            );
+        });
+        
         $this->app->set(ViewInterface::class, function() use ($assetUri) {
             
             $assetPath = '/';
@@ -80,11 +88,9 @@ class View extends Boot
             }
             
             $view = new DefaultView(
-                new PhpRenderer(
-                    $this->app->dirs()->sort()->group('views')
-                ),
-                new Data(),
-                new Assets(
+                renderer: $this->app->get(RendererInterface::class),
+                data: new Data(),
+                assets: new Assets(
                     assetDir: $this->app->dirs()->get('public'),
                     assetUri: (string)$assetUri
                 )
