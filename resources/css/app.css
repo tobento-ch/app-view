@@ -88,6 +88,7 @@ ol.menu-breadcrumb li+li:before {
 }
 .page-main {
   grid-area: main;
+  min-width: 0; /* fix grid blowout */
 }
 .page-aside {
   grid-area: aside;
