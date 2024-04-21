@@ -7,6 +7,6 @@
 <link rel="shortcut icon" href="favicon.ico">
 
 <?php
-$view->asset('css/basis.css');
-$view->asset('css/app.css');
+$view->asset('assets/css/basis.css');
+$view->asset('assets/css/app.css');
 ?>
