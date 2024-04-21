@@ -61,7 +61,7 @@ class View implements MigrationInterface
         ];
         
         $this->assetFiles = [
-            $this->dirs->get('public').'css/' => [
+            $this->dirs->get('public').'assets/css/' => [
                 realpath(__DIR__.'/../../').'/resources/css/app.css',
                 $this->dirs->get('vendor').'/tobento/css-basis/src/basis.css',
             ],
