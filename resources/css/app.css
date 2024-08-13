@@ -78,6 +78,7 @@ ol.menu-breadcrumb li+li:before {
   position: sticky;
   top: 1rem;
   width: 100%;
+  z-index: 40;
 }
 .page-nav {
   grid-area: nav;
