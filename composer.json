@@ -35,12 +35,13 @@
     },
     "suggest": {
         "tobento/app-http": "App Http for supporting forms and routing",
-        "tobento/app-i18n": "App I18n for supporting translations"
+        "tobento/app-translation": "For supporting translations"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "vimeo/psalm": "^4.0",
         "tobento/app-http": "^1.0.3",
+        "tobento/service-icon": "^1.0",
         "tobento/service-filesystem": "^1.0"
     },
     "autoload": {
