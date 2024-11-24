@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Tobento\App\View\Boot;
 
 use Tobento\App\Boot;
-use Tobento\Service\Menu\MenusInterface;
+use Tobento\Service\Icon\IconsInterface;
+use Tobento\Service\Menu\MenuIconsFactory;
 use Tobento\Service\Menu\MenuInterface;
+use Tobento\Service\Menu\MenusInterface;
 use Tobento\Service\Menu\Menus as ServiceMenus;
 use Tobento\Service\View\ViewInterface;
 
@@ -39,7 +41,11 @@ class Menus extends Boot
     public function boot(): void
     {
         if (! $this->app->has(MenusInterface::class)) {
-            $this->app->set(MenusInterface::class, ServiceMenus::class);
+            $this->app->set(MenusInterface::class, static function (null|IconsInterface $icons) {
+                return new ServiceMenus(
+                    menuFactory: $icons ? new MenuIconsFactory(icons: $icons) : null
+                );
+            });
         }
         
         $this->app->on(ViewInterface::class, function(ViewInterface $view) {
