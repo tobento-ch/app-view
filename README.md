@@ -678,6 +678,34 @@ In your view files, render the breadcrumb view:
 <?= $view->render('inc.breadcrumb') ?>
 ```
 
+You may set the active menu tree using the ```activeMenuId``` parameter:
+
+```php
+<?= $view->render('inc.breadcrumb', ['activeMenuId' => 'ID']) ?>
+```
+
+You may use the ```parentMenuId``` parameter to specify the menu tree to be used, which may be useful if you want to modify the breadcrumb menu:
+
+```php
+<?php
+// add item to end of tree:
+$view->menu('breadcrumb')->item('Edit')->order(10000);
+
+echo $view->render('inc.breadcrumb', ['parentMenuId' => 'ID']);
+?>
+```
+
+You may use the ```menu``` parameter to specify a custom breadcrumb menu:
+
+```php
+<?php
+$menu = $view->menu('breadcrumb');
+$menu->item('Home');
+
+echo $view->render('inc.breadcrumb', ['menu' => $menu]);
+?>
+```
+
 ## Table Boot
 
 The table boot does the following:
