@@ -16,6 +16,7 @@ namespace Tobento\App\Test\Boot;
 use PHPUnit\Framework\TestCase;
 use Tobento\App\View\Boot\View;
 use Tobento\App\View\Boot\Breadcrumb;
+use Tobento\Service\Menu\MenusInterface;
 use Tobento\Service\View\ViewInterface;
 use Tobento\App\AppInterface;
 use Tobento\App\AppFactory;
@@ -64,7 +65,8 @@ class BreadcrumbTest extends TestCase
         $app->boot(Breadcrumb::class);
         $app->booting();
         
-        $menu = $app->get(ViewInterface::class)->menu('main');
+        $menus = $app->get(\Tobento\Service\Menu\MenusInterface::class);
+        $menu = $menus->menu('main');
         $menu->link('home', 'Home')->id('home');
         $menu->link('about', 'About')->id('about');
         $menu->link('team', 'Team')->id('team')->parent('about');
@@ -76,10 +78,7 @@ class BreadcrumbTest extends TestCase
             ],
         );
         
-        $this->assertStringContainsString(
-            '<a class="active" href="#">Team</a>',
-            $content
-        );
+        $this->assertStringContainsString('<a class="active" href="#">Team</a>', $content);
     }
     
     public function testDoesNotRendersBreadcrumbIfRouteNameDoesNotMatch()
@@ -105,10 +104,7 @@ class BreadcrumbTest extends TestCase
             ],
         );
         
-        $this->assertStringContainsString(
-            '',
-            $content
-        );
+        $this->assertSame('', $content);
     }
     
     public function testDoesNotRendersBreadcrumbIfNoMainMenu()
@@ -129,9 +125,50 @@ class BreadcrumbTest extends TestCase
             ],
         );
         
+        $this->assertSame('', $content);
+    }
+    
+    public function testRendersBreadcrumbFromMenu()
+    {
+        $app = $this->createApp();
+        
+        $app->dirs()
+            ->dir($app->dir('root').'/tests/views', 'test-views', group: 'views', priority: 1000);
+        
+        $app->boot(View::class);
+        $app->boot(Breadcrumb::class);
+        $app->booting();
+        
+        $menu = $app->get(ViewInterface::class)->menu('main');
+        $menu->link('team', 'Team')->id('team');
+        
+        $view = $app->get(View::class);
+        
         $this->assertStringContainsString(
-            '',
-            $content
+            '<a class="active" href="#">Team</a>',
+            $view->render('inc.breadcrumb', ['activeMenuId' => 'team', 'menu' => $menu])
+        );
+    }
+    
+    public function testRendersBreadcrumbFromMenuParentId()
+    {
+        $app = $this->createApp();
+        
+        $app->dirs()
+            ->dir($app->dir('root').'/tests/views', 'test-views', group: 'views', priority: 1000);
+        
+        $app->boot(View::class);
+        $app->boot(Breadcrumb::class);
+        $app->booting();
+        
+        $menu = $app->get(ViewInterface::class)->menu('main');
+        $menu->link('team', 'Team')->id('team');
+        
+        $view = $app->get(View::class);
+        
+        $this->assertStringContainsString(
+            '<a href="team">Team</a>',
+            $view->render('inc.breadcrumb', ['parentMenuId' => 'team', 'menu' => $menu])
         );
     }
 }
