@@ -1,7 +1,7 @@
 <?php
 // handle active menu:
-$view->menu('breadcrumb')->on($routeName, function($item, $menu) {
-    
+$menu->on($activeMenuId, function($item, $menu) {
+
     $item->itemTag()->class('active');
     
     if ($item->getTreeLevel() > 0) {
@@ -20,21 +20,18 @@ $view->menu('breadcrumb')->on($routeName, function($item, $menu) {
 });
 
 // sort menu by its order:
-$view->menu('breadcrumb')
-    ->sort(fn ($a, $b) => $a->getOrder() <=> $b->getOrder());
+$menu->sort(fn ($a, $b) => $a->getOrder() <=> $b->getOrder());
 
 // change to ol tag
-$view->menu('breadcrumb')->tag('ul')->handle(
+$menu->tag('ul')->handle(
     fn($t) => (new \Tobento\Service\Menu\Tag('ol'))->level($t->getLevel())
 );
 
 // add classes for design:
-$view->menu('breadcrumb')
-    ->tag('ul')
-    ->level(0)->class('menu-breadcrumb');
+$menu->tag('ul')->level(0)->class('menu-breadcrumb');
 ?>
-<?php if ($view->menu('breadcrumb')->hasItems()) { ?>
+<?php if ($menu->hasItems()) { ?>
     <div class="page-breadcrumb">
-        <nav><?= $view->menu('breadcrumb') ?></nav>
+        <nav><?= $menu ?></nav>
     </div>
 <?php } ?>
