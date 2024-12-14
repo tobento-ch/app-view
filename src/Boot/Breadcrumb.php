@@ -40,13 +40,25 @@ class Breadcrumb extends Boot
     public function boot(): void
     {
         $this->app->on(ViewInterface::class, function(ViewInterface $view) {
-            
+                        
             // only create breadcrumb menu on rendering its view:
             $view->on('inc.breadcrumb', function(array $data, ViewInterface $view): array {
                 
+                if (! $this->app->has(MenusInterface::class)) {
+                    return [];
+                }
+                
                 $view->add(key: 'inc.breadcrumb', view: 'inc/breadcrumb');
                 
-                $this->createBreadcrumbMenu($view->data()->get('routeName'));
+                $data['activeMenuId'] ??= $view->data()->get('routeName');
+                $menu = $data['menu'] ?? null;
+                
+                if ($menu instanceof MenuInterface) {
+                    return $data;
+                }
+                
+                $menu = $this->createBreadcrumbMenu($data['activeMenuId'], $data['parentMenuId'] ?? null);
+                $data['menu'] = $menu;
                 return $data;
             });
         });
@@ -55,34 +67,30 @@ class Breadcrumb extends Boot
     /**
      * Creates breadcrumb menu based on the main menu.
      *
-     * @param mixed $routeName
-     * @return void
+     * @param mixed $activeMenuId
+     * @param null|string $parentMenuId
+     * @return MenuInterface
      */
-    protected function createBreadcrumbMenu(mixed $routeName): void
+    protected function createBreadcrumbMenu(mixed $activeMenuId, null|string $parentMenuId): MenuInterface
     {
-        if (!is_string($routeName)) {
-            return;
-        }
+        $breadcrumbMenu = $this->app->get(MenusInterface::class)->menu('breadcrumb');
         
-        if (! $this->app->has(MenusInterface::class)) {
-            return;
+        if (!is_string($activeMenuId)) {
+            return $breadcrumbMenu;
         }
-        
+
         $mainMenu = $this->app->get(MenusInterface::class)->menu('main');
         
-        if (is_null($activeItem = $mainMenu->get($routeName))) {
-            return;
+        if (is_null($activeItem = $mainMenu->get($parentMenuId ?: $activeMenuId))) {
+            return $breadcrumbMenu;
         }
-        
-        $breadcrumbMenu = $this->app->get(MenusInterface::class)->menu('breadcrumb');
         
         // traverse over parent items and create breadcrumb menu items from:
         $traverseParent = function(ItemInterface $item, MenuInterface $menu)
-            use ($routeName, $breadcrumbMenu, &$traverseParent): void {
+            use ($activeMenuId, $breadcrumbMenu, &$traverseParent): void {
             
             if ($item instanceof Link) {
-                
-                $url = $routeName === $item->getTreeId() ? '#' : $item->url();
+                $url = $activeMenuId === $item->getTreeId() ? '#' : $item->url();
                 
                 $breadcrumbMenu->link($url, $item->text())
                     ->id($item->getTreeId())
@@ -99,5 +107,7 @@ class Breadcrumb extends Boot
         };
         
         $traverseParent($activeItem, $mainMenu);
+        
+        return $breadcrumbMenu;
     }
 }
