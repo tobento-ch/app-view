@@ -77,7 +77,7 @@ class MessagesTest extends TestCase
         );
         
         $this->assertStringStartsWith(
-            'Page:<p class="message error">Error message</p',
+            'Page:<p data-message="error" class="message error">Error message</p',
             $content
         );
     }
@@ -103,7 +103,7 @@ class MessagesTest extends TestCase
         );
         
         $this->assertStringStartsWith(
-            'Page:<p class="message success">Successfully installed:',
+            'Page:<p data-message="success" class="message success">Successfully installed:',
             $content
         );
     }
