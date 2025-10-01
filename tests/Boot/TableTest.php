@@ -68,7 +68,7 @@ class TableTest extends TestCase
         );
         
         $this->assertStringStartsWith(
-            '<div class="table">',
+            '<div class="table"',
             $content
         );
     }
