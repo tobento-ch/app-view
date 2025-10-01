@@ -61,7 +61,7 @@ The view boot does the following:
 use Tobento\App\AppFactory;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
@@ -90,7 +90,7 @@ use Tobento\App\AppFactory;
 use Tobento\Service\View\ViewInterface;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
@@ -375,7 +375,7 @@ use Tobento\Service\Menu\MenuInterface;
 use Tobento\Service\View\ViewInterface;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
@@ -471,7 +471,7 @@ use Tobento\Service\Form\Form;
 use Tobento\Service\View\ViewInterface;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Add directories:
 $app->dirs()
