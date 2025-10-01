@@ -38,7 +38,7 @@ composer require tobento/app-view
 
 ## Requirements
 
-- PHP 8.0 or greater
+- PHP 8.4 or greater
 
 # Documentation
 
