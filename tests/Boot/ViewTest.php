@@ -230,6 +230,18 @@ class ViewTest extends TestCase
         );
     }
     
+    public function testCreateMenuMacroIsAvailable()
+    {
+        $app = $this->createApp();
+        $app->boot(View::class);
+        $app->booting();
+        
+        $this->assertInstanceof(
+            MenuInterface::class,
+            $app->get(ViewInterface::class)->createMenu(name: 'main')
+        );
+    }
+    
     public function testTransMacrosAreAvailable()
     {
         $app = $this->createApp();

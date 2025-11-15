@@ -15,6 +15,9 @@ namespace Tobento\App\Test\Boot;
 
 use PHPUnit\Framework\TestCase;
 use Tobento\App\View\Boot\Menus;
+use Tobento\Service\Icon\IconFactory;
+use Tobento\Service\Icon\Icons;
+use Tobento\Service\Icon\IconsInterface;
 use Tobento\Service\Menu\MenusInterface;
 use Tobento\Service\Menu\MenuInterface;
 use Tobento\App\AppInterface;
@@ -74,6 +77,31 @@ class MenusTest extends TestCase
         $this->assertInstanceof(
             MenuInterface::class,
             $app->get(Menus::class)->menu('main')
+        );
+    }
+    
+    public function testCreateMenuMethodUsingMenusBoot()
+    {
+        $app = $this->createApp();
+        $app->boot(Menus::class);
+        $app->booting();
+        
+        $this->assertInstanceof(
+            MenuInterface::class,
+            $app->get(Menus::class)->createMenu('main')
+        );
+    }
+    
+    public function testCreateMenuMethodWithIconsUsingMenusBoot()
+    {
+        $app = $this->createApp();
+        $app->boot(Menus::class);
+        $app->booting();
+        $app->set(IconsInterface::class, new Icons(new IconFactory()));
+
+        $this->assertInstanceof(
+            MenuInterface::class,
+            $app->get(Menus::class)->createMenu('main')
         );
     }
 }
