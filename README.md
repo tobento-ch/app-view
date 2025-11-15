@@ -401,6 +401,10 @@ $view = $app->get(ViewInterface::class);
 var_dump($view->menu('main') instanceof MenuInterface);
 // bool(true)
 
+// This will create a new menu without storing it to the menus:
+var_dump($view->createMenu('name') instanceof MenuInterface);
+// bool(true)
+
 // Run the app
 $app->run();
 ```
