@@ -68,4 +68,8 @@
   .table-row {
     align-items: baseline;
   }
+  .table-row > .table-col {
+    display: flex;
+    width: 100%;
+  }
 }
