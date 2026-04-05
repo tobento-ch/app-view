@@ -1,6 +1,6 @@
 {
     "name": "tobento/app-view",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "type": "library",
     "description": "App view support.",
     "keywords": [
@@ -27,6 +27,7 @@
         "tobento/service-view": "^2.0",
         "tobento/service-uri": "^2.0",
         "tobento/service-menu": "^2.0",
+        "tobento/service-minify": "^2.0",
         "tobento/service-form": "^2.0",
         "tobento/service-table": "^2.0",
         "tobento/service-language": "^2.0",
