@@ -1,6 +1,10 @@
 # App View
 
-The app view includes support for creating menus, forms and more for creating any kind of web applications. It comes with a default layout using the [Basis Css](https://github.com/tobento-ch/css-basis) which you may use or not. Some [App Bundles](https://github.com/tobento-ch?tab=repositories&q=app) may rely on this though.
+The App View package provides a flexible foundation for building web application interfaces.  
+It includes convenient helpers for creating menus, forms, layouts, and other UI elements.
+
+A default layout is included, styled with [Basis CSS](https://github.com/tobento-ch/css-basis), which you may use or replace with your own design.  
+Some [App Bundles](https://github.com/tobento-ch?tab=repositories&q=app) rely on this default layout, so keeping it available can be beneficial depending on your setup.
 
 ## Table of Contents
 
@@ -299,7 +303,9 @@ echo $view->etrans(
 
 **routeUrl**
 
-Returns the url for the specified route if ```Tobento\Service\Routing\RouterInterface``` is available within the app which is the case if the [App Http - Routing Boot](https://github.com/tobento-ch/app-http#routing-boot) has been booted.
+`routeUrl()` is a helper that lets you generate a URL from a named route, instead of hard-coding paths in your templates.
+
+If the application has the [Routing Boot](https://github.com/tobento-ch/app-http#routing-boot) enabled (which registers `Tobento\Service\Routing\RouterInterface`), then calling:
 
 ```php
 use Tobento\Service\Routing\UrlInterface;
@@ -307,11 +313,17 @@ use Tobento\Service\Routing\UrlInterface;
 $url = $view->routeUrl(
     name: 'route.name',
     parameters: [],
+    
+    // optionally disable throwing on missing route
+    throw: false,
 );
 
 var_dump($url instanceof UrlInterface);
 // bool(true)
 ```
+
+This method internally calls `$router->url()`.  
+See the [Url Generation](https://github.com/tobento-ch/service-routing#url-generation) section to learn more.
 
 **tagAttributes**
 
@@ -881,7 +893,7 @@ $view->asset('assets/css/my-app.css');
 
 **Using an asset handler**
 
-You may create an asset handler to minify, combine or replace assets.
+You may register a custom asset handler to minify, combine, transform, or replace assets.
 
 ```php
 use Tobento\App\Boot;
@@ -902,7 +914,9 @@ class SomeThemeBoot extends Boot
 }
 ```
 
-A default asset handler is in development to to minify, combine or replace assets!
+An official asset handler is now available and provides minification, combining, and asset replacement out of the box.  
+See the Assets Handler section in the documentation to learn more:  
+https://github.com/tobento-ch/service-view#assets-handler
 
 # Credits
 
